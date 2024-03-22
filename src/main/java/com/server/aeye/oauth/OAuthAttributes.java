@@ -7,8 +7,10 @@ import com.server.aeye.oauth.provider.OAuth2UserInfo;
 import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 @Getter
+@Slf4j
 public class OAuthAttributes {
 
     private final String nameAttributeKey;
@@ -22,6 +24,7 @@ public class OAuthAttributes {
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {
 
+        log.info(attributes.toString());
         if ("google".equals(registrationId)) {
             return google(userNameAttributeName, attributes);
         }

@@ -3,7 +3,9 @@ package com.server.aeye.oauth;
 import com.server.aeye.domain.Member;
 import com.server.aeye.infrastructure.MemberRepository;
 import java.util.Collections;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +15,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OAuth2UserService extends DefaultOAuth2UserService {
@@ -31,6 +34,14 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         String email = oAuth2User.getAttribute("email");
 
+        if (email == null) {
+            // 카카오 예외처리
+            Map<String, Object> kakaoAccount = (Map<String, Object>) oAuth2User.getAttribute("kakao_account");
+            email = (String) kakaoAccount.get("email");
+        }
+
+        log.info("email: " + email);
+
         Member member = getMember(attributes, email);
 
         return new CustomOAuth2User(
@@ -47,21 +58,26 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
+            log.info("authentication != null");
             return saveMember(attributes, email);
         }
 
         if (member == null) {
+            log.info("member == null");
             return saveMember(attributes);
         }
+        log.info("member != null");
         return member;
     }
 
     private Member saveMember(OAuthAttributes attributes) {
+        log.info("멤버가 존재하지 않기 때문에 멤버를 생성합니다.");
         Member member = attributes.toEntity(attributes.getOAuth2UserInfo());
         return memberRepository.save(member);
     }
 
     private Member saveMember(OAuthAttributes attributes, String email) {
+        log.info("멤버가 존재하기 때문에 멤버를 업데이트합니다.");
         Member member = memberRepository.getMemberByEmail(email);
         member.changeOauth2Id(attributes.getOAuth2UserInfo().getId());
         return memberRepository.save(member);
