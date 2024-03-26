@@ -1,7 +1,9 @@
 package com.server.aeye.exception.model;
 
 import com.server.aeye.exception.ErrorStatus;
+import lombok.Getter;
 
+@Getter
 public class CustomException extends RuntimeException {
 
     private final ErrorStatus errorStatus;

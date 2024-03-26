@@ -1,6 +1,7 @@
 package com.server.aeye.oauth;
 
 import com.server.aeye.domain.Member;
+import com.server.aeye.enums.SocialLogin;
 import com.server.aeye.infrastructure.MemberRepository;
 import java.util.Collections;
 import java.util.Map;
@@ -33,16 +34,18 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
         String email = oAuth2User.getAttribute("email");
+        SocialLogin socialLogin = SocialLogin.GOOGLE;
 
         if (email == null) {
             // 카카오 예외처리
-            Map<String, Object> kakaoAccount = (Map<String, Object>) oAuth2User.getAttribute("kakao_account");
+            Map<String, Object> kakaoAccount = oAuth2User.getAttribute("kakao_account");
             email = (String) kakaoAccount.get("email");
+            socialLogin = SocialLogin.KAKAO;
         }
 
-        log.info("email: " + email);
+        log.info("email: " + email, "socialLogin: " + socialLogin);
 
-        Member member = getMember(attributes, email);
+        Member member = getMember(attributes, email, socialLogin);
 
         return new CustomOAuth2User(
             Collections.singleton(new SimpleGrantedAuthority(member.getAuthority().name())),
@@ -53,7 +56,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         );
     }
 
-    private Member getMember(OAuthAttributes attributes, String email) {
+    private Member getMember(OAuthAttributes attributes, String email, SocialLogin socialLogin) {
         Member member = memberRepository.findByOauth2Id(attributes.getOAuth2UserInfo().getId()).orElse(null);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -64,15 +67,15 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         if (member == null) {
             log.info("member == null");
-            return saveMember(attributes);
+            return saveMember(attributes, socialLogin);
         }
         log.info("member != null");
         return member;
     }
 
-    private Member saveMember(OAuthAttributes attributes) {
+    private Member saveMember(OAuthAttributes attributes, SocialLogin socialLogin) {
         log.info("멤버가 존재하지 않기 때문에 멤버를 생성합니다.");
-        Member member = attributes.toEntity(attributes.getOAuth2UserInfo());
+        Member member = attributes.toEntity(attributes.getOAuth2UserInfo(), socialLogin);
         return memberRepository.save(member);
     }
 

@@ -1,6 +1,7 @@
 package com.server.aeye.oauth;
 
 import com.server.aeye.domain.Member;
+import com.server.aeye.enums.SocialLogin;
 import com.server.aeye.oauth.provider.GoogleOAuth2UserInfo;
 import com.server.aeye.oauth.provider.KakaoOAuth2UserInfo;
 import com.server.aeye.oauth.provider.OAuth2UserInfo;
@@ -45,12 +46,13 @@ public class OAuthAttributes {
             .build();
     }
 
-    public Member toEntity(OAuth2UserInfo oAuth2UserInfo) {
+    public Member toEntity(OAuth2UserInfo oAuth2UserInfo, SocialLogin socialLogin) {
         return Member.builder()
             .name(oAuth2UserInfo.getName())
             .email(oAuth2UserInfo.getEmail())
             .profileUri(oAuth2UserInfo.getPicture())
             .oauth2Id(oAuth2UserInfo.getId())
+            .socialLogin(socialLogin)
             .build();
     }
 }
