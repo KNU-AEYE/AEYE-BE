@@ -9,12 +9,14 @@ import lombok.Getter;
 @Builder
 public class MemberResponseDto {
 
+    private Long id;
     private String name;
     private String profileUri;
     private SocialLogin socialLogin;
 
     public static MemberResponseDto toEntity(Member member){
         return MemberResponseDto.builder()
+            .id(member.getId())
             .name(member.getName())
             .profileUri(member.getProfileUri())
             .socialLogin(member.getSocialLogin())
