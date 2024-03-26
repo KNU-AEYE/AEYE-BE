@@ -1,5 +1,8 @@
 package com.server.aeye.oauth;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.server.aeye.DTO.ApiResponseDto;
+import com.server.aeye.exception.ErrorStatus;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,6 +17,10 @@ public class OAuth2LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException, ServletException {
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.setStatus(ErrorStatus.OAUTH_UNAUTHORIZED.getHttpStatusCode());
+        response.setContentType("application/json;charset=UTF-8");
+        String jsonResponse = new ObjectMapper().writeValueAsString(
+            ApiResponseDto.error(ErrorStatus.OAUTH_UNAUTHORIZED, ErrorStatus.OAUTH_UNAUTHORIZED.getMessage()));
+        response.getWriter().write(jsonResponse);
     }
 }

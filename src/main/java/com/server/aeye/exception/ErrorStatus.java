@@ -19,6 +19,9 @@ public enum ErrorStatus {
      * 401 Unauthorized
      */
 
+    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "Invalid JWT Token"),
+    OAUTH_UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "OAuth2 Unauthorized"),
+
     /*
      * 403 Forbidden
      */
