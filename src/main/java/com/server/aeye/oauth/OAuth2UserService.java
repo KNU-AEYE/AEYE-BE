@@ -36,7 +36,7 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         if (email == null) {
             // 카카오 예외처리
-            Map<String, Object> kakaoAccount = (Map<String, Object>) oAuth2User.getAttribute("kakao_account");
+            Map<String, Object> kakaoAccount = oAuth2User.getAttribute("kakao_account");
             email = (String) kakaoAccount.get("email");
         }
 
