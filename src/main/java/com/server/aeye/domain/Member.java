@@ -1,8 +1,8 @@
 package com.server.aeye.domain;
 
+import com.server.aeye.DTO.member.request.MemberRequestDto;
 import com.server.aeye.enums.Authority;
 import com.server.aeye.enums.SocialLogin;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -20,7 +20,6 @@ public class Member extends AuditingTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
     private Long id;
 
     private String email;
@@ -49,5 +48,9 @@ public class Member extends AuditingTimeEntity {
 
     public void changeOauth2Id(String oauth2Id) {
         this.oauth2Id = oauth2Id;
+    }
+
+    public void updateMember(MemberRequestDto memberRequestDto) {
+        this.name = memberRequestDto.getName();
     }
 }
