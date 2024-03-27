@@ -16,9 +16,7 @@ permissions:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -30,13 +28,18 @@ jobs:
           distribution: 'adopt'
 
       - name: Make gradlew executable
-        run: chmod +x gradlew
+        run: chmod +x ./gradlew   # Gradle 스크립트 파일에 실행 권한을 부여합니다.
 
       - name: Create application.yml
         run: |
           mkdir -p ./src/main/resources
           cd ./src/main/resources
           echo "${{ secrets.APPLICATION }}" > application.yml
+
+#      - name: Create Google Credentials JSON
+#        run: |
+#          cd ./src/main/resources
+#          echo "${{ secrets.GOOGLE_CREDENTIALS }}" > "${{ secrets.GOOGLE_CREDENTIALS_NAME }}"
 
       - name: Build with Gradle
         run: ./gradlew clean build
