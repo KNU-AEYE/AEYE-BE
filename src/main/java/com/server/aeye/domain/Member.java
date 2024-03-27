@@ -9,6 +9,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,6 +37,8 @@ public class Member extends AuditingTimeEntity {
     @Enumerated(EnumType.STRING)
     private Authority authority;
 
+    private LocalDateTime lastActive;
+
     @Builder
     public Member(String email, String name, String profileUri, String oauth2Id, SocialLogin socialLogin) {
         this.email = email;
@@ -52,5 +55,9 @@ public class Member extends AuditingTimeEntity {
 
     public void updateMember(MemberRequestDto memberRequestDto) {
         this.name = memberRequestDto.getName();
+    }
+
+    public void updateLastActive(LocalDateTime lastActive) {
+        this.lastActive = lastActive;
     }
 }

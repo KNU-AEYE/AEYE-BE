@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
@@ -46,6 +47,12 @@ public class MemberController {
     public ApiResponseDto<?> updateMember(@Parameter(hidden = true) @AuthenticationPrincipal User user, @RequestBody MemberRequestDto memberRequestDto) {
         memberService.updateMember(user.getUsername(), memberRequestDto);
         return ApiResponseDto.success(SuccessStatus.OK, SuccessStatus.OK.getMessage());
+    }
+
+    @Operation(summary = "온라인 관리자 조회", description = "현재 접속중인 관리자를 표시합니다.")
+    @GetMapping("/online")
+    public ApiResponseDto<List<MemberResponseDto>> getOnlineAdmin(@Parameter(hidden = true) @AuthenticationPrincipal User user) {
+        return ApiResponseDto.success(SuccessStatus.OK, memberService.getOnlineAdmin(user.getUsername()));
     }
 
 }
