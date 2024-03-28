@@ -4,7 +4,6 @@ import com.server.aeye.domain.Member;
 import com.server.aeye.enums.SocialLogin;
 import com.server.aeye.infrastructure.MemberRepository;
 import java.util.Collections;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -33,19 +32,17 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
 
-        String email = oAuth2User.getAttribute("email");
-        SocialLogin socialLogin = SocialLogin.GOOGLE;
+        log.info("registrationId: " + registrationId);
 
-        if (email == null) {
-            // 카카오 예외처리
-            Map<String, Object> kakaoAccount = oAuth2User.getAttribute("kakao_account");
-            email = (String) kakaoAccount.get("email");
+        SocialLogin socialLogin;
+
+        if (registrationId.equals("google")) {
+            socialLogin = SocialLogin.GOOGLE;
+        } else {
             socialLogin = SocialLogin.KAKAO;
         }
 
-        log.info("email: " + email, "socialLogin: " + socialLogin);
-
-        Member member = getMember(attributes, email, socialLogin);
+        Member member = getMember(attributes, socialLogin);
 
         return new CustomOAuth2User(
             Collections.singleton(new SimpleGrantedAuthority(member.getAuthority().name())),
@@ -56,13 +53,13 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         );
     }
 
-    private Member getMember(OAuthAttributes attributes, String email, SocialLogin socialLogin) {
+    private Member getMember(OAuthAttributes attributes, SocialLogin socialLogin) {
         Member member = memberRepository.findByOauth2Id(attributes.getOAuth2UserInfo().getId()).orElse(null);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null) {
             log.info("authentication != null");
-            return saveMember(attributes, email);
+            return saveMember(attributes);
         }
 
         if (member == null) {
@@ -79,9 +76,9 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
         return memberRepository.save(member);
     }
 
-    private Member saveMember(OAuthAttributes attributes, String email) {
+    private Member saveMember(OAuthAttributes attributes) {
         log.info("멤버가 존재하기 때문에 멤버를 업데이트합니다.");
-        Member member = memberRepository.getMemberByEmail(email);
+        Member member = memberRepository.getMemberByOauth2Id(attributes.getOAuth2UserInfo().getId());
         member.changeOauth2Id(attributes.getOAuth2UserInfo().getId());
         return memberRepository.save(member);
     }

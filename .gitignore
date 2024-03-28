@@ -41,3 +41,6 @@ out/
 /src/main/resources/**/*.yaml
 /src/main/resources/**/*.properties
 /src/main/resources/**/*.json
+
+### QueryDSL ###
+/src/main/generated/

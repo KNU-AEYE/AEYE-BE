@@ -20,4 +20,11 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
                 ErrorStatus.MEMBER_NOT_FOUND.getMessage())
         );
     }
+
+    default Member getMemberByOauth2Id(String oauth2Id) {
+        return this.findByOauth2Id(oauth2Id).orElseThrow(
+            () -> new NotFoundException(ErrorStatus.MEMBER_NOT_FOUND,
+                ErrorStatus.MEMBER_NOT_FOUND.getMessage())
+        );
+    }
 }

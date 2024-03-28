@@ -22,15 +22,8 @@ public class CustomOAuth2User extends DefaultOAuth2User {
         this.oauth2Id = oauth2Id;
     }
 
-    // @AuthenticationPrincipal User user에서 OAuth2 유저와 일반 유저 동일하게 사용하기 위해 필요
     @Override
     public String getName() {
-        String email = (String) this.getAttributes().get("email");
-        if (email == null) {
-            // 카카오 예외처리
-            Map<String, Object> kakaoAccount = (Map<String, Object>) this.getAttributes().get("kakao_account");
-            email = (String) kakaoAccount.get("email");
-        }
-        return email;
+        return this.oauth2Id;
     }
 }
