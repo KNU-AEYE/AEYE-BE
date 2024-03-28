@@ -1,6 +1,7 @@
 package com.server.aeye.service;
 
-import com.server.aeye.DTO.member.request.MemberRequestDto;
+import com.server.aeye.DTO.member.request.MemberNameRequestDto;
+import com.server.aeye.DTO.member.request.MemberPhoneRequestDto;
 import com.server.aeye.DTO.member.response.MemberDetailResponseDto;
 import com.server.aeye.DTO.member.response.MemberResponseDto;
 import com.server.aeye.domain.Member;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,23 +19,34 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
 
+    @Transactional(readOnly = true)
     public MemberResponseDto getMember(String username) {
         Member member = memberRepository.getMemberByOauth2Id(username);
         updateLastActiveTime(member, LocalDateTime.now());
         return MemberResponseDto.toEntity(member);
     }
 
+    @Transactional(readOnly = true)
     public MemberDetailResponseDto getMemberDetail(String username) {
         Member member = memberRepository.getMemberByOauth2Id(username);
         return MemberDetailResponseDto.toEntity(member);
     }
 
-    public void updateMember(String username, MemberRequestDto memberRequestDto) {
+    @Transactional
+    public void updateName(String username, MemberNameRequestDto nameRequestDto) {
         Member member = memberRepository.getMemberByOauth2Id(username);
-        member.updateMember(memberRequestDto);
+        member.updateName(nameRequestDto.getName());
         memberRepository.save(member);
     }
 
+    @Transactional
+    public void updatePhone(String username, MemberPhoneRequestDto phoneRequestDto) {
+        Member member = memberRepository.getMemberByOauth2Id(username);
+        member.updatePhone(phoneRequestDto.getPhone());
+        memberRepository.save(member);
+    }
+
+    @Transactional(readOnly = true)
     public List<MemberResponseDto> getOnlineAdmin(String username) {
         Member member = memberRepository.getMemberByOauth2Id(username);
         // 현재 시간으로부터 5분 이전 시간을 계산

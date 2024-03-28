@@ -15,6 +15,7 @@ public class MemberDetailResponseDto {
     private String email;
     private String profileUri;
     private String oauth2Id;
+    private String phone;
     private SocialLogin socialLogin;
     private boolean isAdmin;
 
@@ -25,6 +26,7 @@ public class MemberDetailResponseDto {
             .email(member.getEmail())
             .profileUri(member.getProfileUri())
             .oauth2Id(member.getOauth2Id())
+            .phone(member.getPhone())
             .socialLogin(member.getSocialLogin())
             .isAdmin(member.getAuthority() == Authority.ROLE_ADMIN)
             .build();

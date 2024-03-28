@@ -1,6 +1,7 @@
 package com.server.aeye.domain;
 
-import com.server.aeye.DTO.member.request.MemberRequestDto;
+import com.server.aeye.DTO.member.request.MemberNameRequestDto;
+import com.server.aeye.DTO.member.request.MemberPhoneRequestDto;
 import com.server.aeye.enums.Authority;
 import com.server.aeye.enums.SocialLogin;
 import jakarta.persistence.Entity;
@@ -29,6 +30,8 @@ public class Member extends AuditingTimeEntity {
 
     private String profileUri;
 
+    private String phone;
+
     private String oauth2Id;
 
     @Enumerated(EnumType.STRING)
@@ -49,12 +52,12 @@ public class Member extends AuditingTimeEntity {
         this.authority = Authority.ROLE_USER;
     }
 
-    public void changeOauth2Id(String oauth2Id) {
-        this.oauth2Id = oauth2Id;
+    public void updateName(String name) {
+        this.name = name;
     }
 
-    public void updateMember(MemberRequestDto memberRequestDto) {
-        this.name = memberRequestDto.getName();
+    public void updatePhone(String phone) {
+        this.phone = phone;
     }
 
     public void updateLastActive(LocalDateTime lastActive) {
