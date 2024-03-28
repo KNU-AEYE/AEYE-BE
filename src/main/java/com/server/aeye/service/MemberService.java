@@ -18,24 +18,24 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     public MemberResponseDto getMember(String username) {
-        Member member = memberRepository.getMemberByEmail(username);
+        Member member = memberRepository.getMemberByOauth2Id(username);
         updateLastActiveTime(member, LocalDateTime.now());
         return MemberResponseDto.toEntity(member);
     }
 
     public MemberDetailResponseDto getMemberDetail(String username) {
-        Member member = memberRepository.getMemberByEmail(username);
+        Member member = memberRepository.getMemberByOauth2Id(username);
         return MemberDetailResponseDto.toEntity(member);
     }
 
     public void updateMember(String username, MemberRequestDto memberRequestDto) {
-        Member member = memberRepository.getMemberByEmail(username);
+        Member member = memberRepository.getMemberByOauth2Id(username);
         member.updateMember(memberRequestDto);
         memberRepository.save(member);
     }
 
     public List<MemberResponseDto> getOnlineAdmin(String username) {
-        Member member = memberRepository.getMemberByEmail(username);
+        Member member = memberRepository.getMemberByOauth2Id(username);
         // 현재 시간으로부터 5분 이전 시간을 계산
         LocalDateTime activeThreshold = LocalDateTime.now().minusMinutes(5);
         // last_active 가 activeThreshold 보다 이후인 사용자들을 조회
