@@ -71,15 +71,13 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     }
 
     private Member saveMember(OAuthAttributes attributes, SocialLogin socialLogin) {
-        log.info("멤버가 존재하지 않기 때문에 멤버를 생성합니다.");
+        log.info("멤버가 존재하지 않기 때문에 회원 정보를 저장한 후 멤버를 리턴합니다.");
         Member member = attributes.toEntity(attributes.getOAuth2UserInfo(), socialLogin);
         return memberRepository.save(member);
     }
 
     private Member saveMember(OAuthAttributes attributes) {
-        log.info("멤버가 존재하기 때문에 멤버를 업데이트합니다.");
-        Member member = memberRepository.getMemberByOauth2Id(attributes.getOAuth2UserInfo().getId());
-        member.changeOauth2Id(attributes.getOAuth2UserInfo().getId());
-        return memberRepository.save(member);
+        log.info("멤버가 존재하기 때문에 멤버를 리턴합니다.");
+        return memberRepository.getMemberByOauth2Id(attributes.getOAuth2UserInfo().getId());
     }
 }

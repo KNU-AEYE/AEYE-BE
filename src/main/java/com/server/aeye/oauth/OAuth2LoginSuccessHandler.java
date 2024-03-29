@@ -29,10 +29,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
         Authentication authentication) throws IOException, ServletException {
 
-        log.info("onAuthenticationSuccess");
         CustomOAuth2User customOAuth2User = (CustomOAuth2User) authentication.getPrincipal();
         String id = customOAuth2User.getOauth2Id();
-
+        log.info("onAuthenticationSuccess, oauth2Id: " + id);
         TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
         log.info("tokenDto: " + tokenDto);
         response.sendRedirect(redirectUri + "?accessToken=" + tokenDto.getAccessToken());
