@@ -1,15 +1,16 @@
 package com.server.aeye.domain;
 
-import com.server.aeye.DTO.member.request.MemberNameRequestDto;
-import com.server.aeye.DTO.member.request.MemberPhoneRequestDto;
 import com.server.aeye.enums.Authority;
 import com.server.aeye.enums.SocialLogin;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
@@ -41,6 +42,10 @@ public class Member extends AuditingTimeEntity {
     private Authority authority;
 
     private LocalDateTime lastActive;
+
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
 
     @Builder
     public Member(String email, String name, String profileUri, String oauth2Id, SocialLogin socialLogin) {
