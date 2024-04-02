@@ -59,6 +59,9 @@ dependencies {
 
 	// webclient
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+
+	// elasticsearch
+	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 }
 
 // Querydsl 설정부
