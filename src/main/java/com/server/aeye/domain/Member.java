@@ -2,7 +2,6 @@ package com.server.aeye.domain;
 
 import com.server.aeye.enums.Authority;
 import com.server.aeye.enums.SocialLogin;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
