@@ -28,4 +28,5 @@ public class VideoLog {
     @ManyToOne
     @JoinColumn(name = "video_id")
     private Video video;
+
 }

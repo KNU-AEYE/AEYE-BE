@@ -45,7 +45,7 @@ public class MemberController {
     }
 
     @Operation(summary = "회원 이름 수정", description = "회원 이름을 수정합니다.")
-    @PutMapping("/update/name")
+    @PutMapping("/name")
     public ApiResponseDto<?> updateName(@Parameter(hidden = true) @AuthenticationPrincipal User user,
         @Valid @RequestBody MemberNameRequestDto nameRequestDto) {
         memberService.updateName(user.getUsername(), nameRequestDto);
@@ -53,7 +53,7 @@ public class MemberController {
     }
 
     @Operation(summary = "회원 전화번호 추가", description = "회원 전화번호를 추가합니다.")
-    @PutMapping("/update/phone")
+    @PutMapping("/phone")
     public ApiResponseDto<?> updatePhone(@Parameter(hidden = true) @AuthenticationPrincipal User user,
         @Valid @RequestBody MemberPhoneRequestDto phoneRequestDto) {
         memberService.updatePhone(user.getUsername(), phoneRequestDto);
