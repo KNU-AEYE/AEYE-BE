@@ -1,15 +1,15 @@
 package com.server.aeye.controller;
 
 import com.server.aeye.DTO.ApiResponseDto;
-import com.server.aeye.DTO.video.VideoListResponseDto;
-import com.server.aeye.DTO.video.VideoResponseDto;
+import com.server.aeye.DTO.video.response.VideoDocumentListResponseDto;
+import com.server.aeye.DTO.video.response.VideoListResponseDto;
+import com.server.aeye.DTO.video.response.VideoResponseDto;
 import com.server.aeye.exception.SuccessStatus;
 import com.server.aeye.service.VideoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,6 +44,15 @@ public class VideoController {
         @Parameter(hidden = true) @AuthenticationPrincipal User user, @PathVariable Long videoId) {
         return ApiResponseDto.success(
             SuccessStatus.GET_VIDEO_SUCCESS, videoService.getVideo(user.getUsername(), videoId));
+    }
+
+    @Operation(summary = "영상 검색", description = "영상을 키워드 또는 내용으로 검색합니다.")
+    @GetMapping("/search")
+    public ApiResponseDto<VideoDocumentListResponseDto> searchVideo(
+        @Parameter(hidden = true) @AuthenticationPrincipal User user, @RequestParam String keyword,
+        @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        return ApiResponseDto.success(SuccessStatus.GET_VIDEO_SUCCESS,
+            videoService.searchVideo(user.getUsername(), keyword, PageRequest.of(page, size)));
     }
 
 }

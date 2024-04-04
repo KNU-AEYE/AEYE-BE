@@ -1,12 +1,12 @@
 package com.server.aeye.infrastructure.elasticsearch;
 
 import com.server.aeye.domain.VideoLogDocument;
-import com.server.aeye.domain.VideoSummaryDocument;
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
 
-//public interface VideoLogDocumentRepository extends ElasticsearchRepository<VideoLogDocument, Long> {
-//
-//    List<VideoSummaryDocument> findByContent(String content);
-//
-//}
+public interface VideoLogDocumentRepository extends ElasticsearchRepository<VideoLogDocument, Long> {
+
+    Page<VideoLogDocument> findByContent(PageRequest pageRequest, String content);
+
+}

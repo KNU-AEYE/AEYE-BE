@@ -1,4 +1,4 @@
-package com.server.aeye.DTO.video;
+package com.server.aeye.DTO.video.response;
 
 import java.util.List;
 import lombok.AllArgsConstructor;

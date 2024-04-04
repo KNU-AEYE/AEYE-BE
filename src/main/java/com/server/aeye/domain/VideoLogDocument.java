@@ -27,14 +27,14 @@ public class VideoLogDocument {
     @Field(type = FieldType.Text)
     private String content;
 
-    private Long videoId;
+    private Long video_id;
 
-    public static VideoLogDocument from (VideoLog videoLog) {
+    public static VideoLogDocument of (VideoLog videoLog) {
         return VideoLogDocument.builder()
             .id(videoLog.getId())
             .time(videoLog.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
             .content(videoLog.getContent())
-            .videoId(videoLog.getVideo().getId())
+            .video_id(videoLog.getVideo().getId())
             .build();
     }
 

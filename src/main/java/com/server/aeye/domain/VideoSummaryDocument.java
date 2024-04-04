@@ -27,14 +27,14 @@ public class VideoSummaryDocument {
     @Field(type = FieldType.Text)
     private String content;
 
-    private Long videoId;
+    private Long video_id;
 
-    public static VideoSummaryDocument from (VideoSummary videoSummary) {
+    public static VideoSummaryDocument of (VideoSummary videoSummary) {
         return VideoSummaryDocument.builder()
             .id(videoSummary.getId())
             .time(videoSummary.getTime().format(DateTimeFormatter.ofPattern("HH:mm:ss")))
             .content(videoSummary.getContent())
-            .videoId(videoSummary.getVideo().getId())
+            .video_id(videoSummary.getVideo().getId())
             .build();
     }
 

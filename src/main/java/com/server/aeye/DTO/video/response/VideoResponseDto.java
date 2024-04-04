@@ -1,4 +1,4 @@
-package com.server.aeye.DTO.video;
+package com.server.aeye.DTO.video.response;
 
 import com.server.aeye.domain.Video;
 import java.time.LocalDateTime;
@@ -16,7 +16,7 @@ public class VideoResponseDto {
     private String videoUri;
     private LocalDateTime createdAt;
 
-    public static VideoResponseDto toEntity(Video video) {
+    public static VideoResponseDto toDto(Video video) {
         return VideoResponseDto.builder()
             .id(video.getId())
             .title(video.getTitle())
