@@ -1,0 +1,44 @@
+package com.server.aeye.service;
+
+import com.server.aeye.DTO.video.response.VideoDocumentDto;
+import com.server.aeye.DTO.video.response.VideoDocumentListResponseDto;
+import com.server.aeye.DTO.video.response.VideoListResponseDto;
+import com.server.aeye.DTO.video.response.VideoResponseDto;
+import com.server.aeye.domain.Member;
+import com.server.aeye.domain.VideoLogDocument;
+import com.server.aeye.infrastructure.MemberRepository;
+import com.server.aeye.infrastructure.VideoRepository;
+import com.server.aeye.infrastructure.elasticsearch.VideoLogDocumentRepository;
+import com.server.aeye.infrastructure.elasticsearch.VideoSummaryDocumentRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class VideoService {
+
+    private final MemberRepository memberRepository;
+    private final VideoRepository videoRepository;
+    private final VideoLogDocumentRepository videoLogDocumentRepository;
+    private final VideoSummaryDocumentRepository videoSummaryDocumentRepository;
+
+    public VideoListResponseDto getVideoList(String username, PageRequest pageRequest) {
+        Member member = memberRepository.getMemberByOauth2Id(username);
+        Page<VideoResponseDto> videoList = videoRepository.findAllByTeam(pageRequest, member.getTeam()).map(VideoResponseDto::toDto);
+        return new VideoListResponseDto(videoList.getContent(), videoList.getTotalPages());
+    }
+
+    public VideoResponseDto getVideo(String username, Long videoId) {
+        return VideoResponseDto.toDto(videoRepository.getVideoById(videoId));
+    }
+
+    public VideoDocumentListResponseDto searchVideo(String username, String keyword, PageRequest pageRequest) {
+        Member member = memberRepository.getMemberByOauth2Id(username);
+        Page<VideoDocumentDto> videoList = videoLogDocumentRepository.findByContent(pageRequest, keyword).map(
+            VideoDocumentDto::toDto);
+        return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
+    }
+
+}

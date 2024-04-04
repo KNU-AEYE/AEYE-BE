@@ -30,6 +30,7 @@ public enum ErrorStatus {
      * 404 Not Found
      */
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
+    VIDEO_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 비디오입니다."),
     ;
     private final HttpStatus httpStatus;
     private final String message;

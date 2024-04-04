@@ -14,7 +14,7 @@ public class MemberResponseDto {
     private String profileUri;
     private SocialLogin socialLogin;
 
-    public static MemberResponseDto toEntity(Member member){
+    public static MemberResponseDto toDto(Member member){
         return MemberResponseDto.builder()
             .id(member.getId())
             .name(member.getName())

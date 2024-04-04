@@ -23,13 +23,13 @@ public class MemberService {
     public MemberResponseDto getMember(String username) {
         Member member = memberRepository.getMemberByOauth2Id(username);
         updateLastActiveTime(member, LocalDateTime.now());
-        return MemberResponseDto.toEntity(member);
+        return MemberResponseDto.toDto(member);
     }
 
     @Transactional(readOnly = true)
     public MemberDetailResponseDto getMemberDetail(String username) {
         Member member = memberRepository.getMemberByOauth2Id(username);
-        return MemberDetailResponseDto.toEntity(member);
+        return MemberDetailResponseDto.toDto(member);
     }
 
     @Transactional
@@ -54,7 +54,7 @@ public class MemberService {
         // last_active 가 activeThreshold 보다 이후인 사용자들을 조회
         List<Member> onlineAdminList = memberRepository.findAdminMemberByLastActive(activeThreshold);
         return onlineAdminList.stream()
-            .map(MemberResponseDto::toEntity)
+            .map(MemberResponseDto::toDto)
             .collect(Collectors.toList());
     }
 

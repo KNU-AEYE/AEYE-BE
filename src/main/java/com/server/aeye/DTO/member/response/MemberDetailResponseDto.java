@@ -19,7 +19,7 @@ public class MemberDetailResponseDto {
     private SocialLogin socialLogin;
     private boolean isAdmin;
 
-    public static MemberDetailResponseDto toEntity(Member member) {
+    public static MemberDetailResponseDto toDto(Member member) {
         return MemberDetailResponseDto.builder()
             .id(member.getId())
             .name(member.getName())
