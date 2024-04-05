@@ -16,10 +16,13 @@ public class ElasticSearchConfig extends ElasticsearchConfiguration {
     @Value("${spring.elasticsearch.password}")
     private String password;
 
+    @Value("${spring.elasticsearch.host}")
+    private String host;
+
     @Override
     public ClientConfiguration clientConfiguration() {
         return ClientConfiguration.builder()
-            .connectedTo("localhost:9200")
+            .connectedTo(host)
             .withBasicAuth(username, password)
             .build();
     }
