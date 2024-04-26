@@ -5,6 +5,7 @@ import com.server.aeye.DTO.team.request.TeamRequestDto;
 import com.server.aeye.DTO.team.response.TeamResponseDto;
 import com.server.aeye.exception.SuccessStatus;
 import com.server.aeye.service.TeamService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -28,17 +29,19 @@ public class TeamController {
 
     private final TeamService teamService;
 
+    @Operation(summary = "팀 검색", description = "팀 이름으로 팀을 검색합니다.")
     @GetMapping("/search/{teamName}")
     public ApiResponseDto<List<TeamResponseDto>> searchTeam(@PathVariable String teamName,
         @Parameter(hidden = true) @AuthenticationPrincipal User user) {
         return ApiResponseDto.success(SuccessStatus.TEAM_SEARCH_SUCCESS, teamService.searchTeam(teamName));
     }
 
+    @Operation(summary = "팀 생성", description = "팀을 생성합니다.")
     @PostMapping
     public ApiResponseDto<?> createTeam(@RequestBody TeamRequestDto teamRequestDto,
         @Parameter(hidden = true) @AuthenticationPrincipal User user) {
         teamService.createTeam(teamRequestDto, user.getUsername());
-        return ApiResponseDto.success(SuccessStatus.NO_CONTENT, SuccessStatus.NO_CONTENT.getMessage());
+        return ApiResponseDto.success(SuccessStatus.CREATE_TEAM_SUCCESS, SuccessStatus.CREATE_TEAM_SUCCESS.getMessage());
     }
 
 }

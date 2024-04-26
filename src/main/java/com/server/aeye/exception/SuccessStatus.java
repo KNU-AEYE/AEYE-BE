@@ -22,6 +22,7 @@ public enum SuccessStatus {
      * 201 CREATED
      */
     SIGNUP_SUCCESS(HttpStatus.CREATED, "소셜 로그인 가입 성공"),
+    CREATE_TEAM_SUCCESS(HttpStatus.CREATED, "팀 생성 성공"),
 
     /*
      * 204 No Content
