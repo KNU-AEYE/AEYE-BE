@@ -15,8 +15,11 @@ public class TeamService {
     private final TeamRepository teamRepository;
 
     public void createTeam(TeamRequestDto teamRequestDto, String username) {
-
-
+        Team team = Team.builder()
+            .name(teamRequestDto.getName())
+            .description(teamRequestDto.getDescription())
+            .build();
+        teamRepository.save(team);
     }
 
     public List<TeamResponseDto> searchTeam(String teamName) {
