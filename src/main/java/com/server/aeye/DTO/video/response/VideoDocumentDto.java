@@ -13,32 +13,32 @@ public class VideoDocumentDto {
     private Long id;
     private String content;
     private String time;
-    private Long videoId;
+    private VideoResponseDto videoResponseDto;
 
-    public static VideoDocumentDto toDto(VideoLogDocument videoDocument) {
-        return VideoDocumentDto.builder()
-            .id(videoDocument.getId())
-            .content(videoDocument.getContent())
-            .time(videoDocument.getTime())
-            .videoId(videoDocument.getVideo_id())
-            .build();
-    }
+//    public static VideoDocumentDto toDto(VideoLogDocument videoDocument) {
+//        return VideoDocumentDto.builder()
+//            .id(videoDocument.getId())
+//            .content(videoDocument.getContent())
+//            .time(videoDocument.getTime())
+//            .videoId(videoDocument.getVideo_id())
+//            .build();
+//    }
 
-    public static VideoDocumentDto toDto(VideoSummaryDocument videoDocument) {
-        return VideoDocumentDto.builder()
-            .id(videoDocument.getId())
-            .content(videoDocument.getContent())
-            .time(videoDocument.getTime())
-            .videoId(videoDocument.getVideo_id())
-            .build();
-    }
+//    public static VideoDocumentDto toDto(VideoSummaryDocument videoDocument) {
+//        return VideoDocumentDto.builder()
+//            .id(videoDocument.getId())
+//            .content(videoDocument.getContent())
+//            .time(videoDocument.getTime())
+//            .videoId(videoDocument.getVideo_id())
+//            .build();
+//    }
 
     public static VideoDocumentDto toDto(VideoLog videoLog) {
         return VideoDocumentDto.builder()
             .id(videoLog.getId())
             .content(videoLog.getContent())
             .time(String.valueOf(videoLog.getTime()))
-            .videoId(videoLog.getVideo().getId())
+            .videoResponseDto(VideoResponseDto.toDto(videoLog.getVideo()))
             .build();
     }
 }
