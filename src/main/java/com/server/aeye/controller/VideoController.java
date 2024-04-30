@@ -58,7 +58,7 @@ public class VideoController {
     // QueryDsl
     @Operation(summary = "영상 검색", description = "영상을 키워드 또는 내용으로 검색합니다.")
     @GetMapping("/search")
-    public ApiResponseDto<VideoListResponseDto> searchVideo(
+    public ApiResponseDto<VideoDocumentListResponseDto> searchVideo(
         @Parameter(hidden = true) @AuthenticationPrincipal User user, @RequestParam String keyword,
         @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ApiResponseDto.success(SuccessStatus.GET_VIDEO_SUCCESS,
