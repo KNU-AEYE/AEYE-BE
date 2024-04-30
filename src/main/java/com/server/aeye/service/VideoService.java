@@ -7,6 +7,7 @@ import com.server.aeye.DTO.video.response.VideoResponseDto;
 import com.server.aeye.domain.Member;
 import com.server.aeye.domain.VideoLogDocument;
 import com.server.aeye.infrastructure.MemberRepository;
+import com.server.aeye.infrastructure.VideoLogRepository;
 import com.server.aeye.infrastructure.VideoRepository;
 import com.server.aeye.infrastructure.elasticsearch.VideoLogDocumentRepository;
 import com.server.aeye.infrastructure.elasticsearch.VideoSummaryDocumentRepository;
@@ -21,6 +22,7 @@ public class VideoService {
 
     private final MemberRepository memberRepository;
     private final VideoRepository videoRepository;
+    private final VideoLogRepository videoLogRepository;
     private final VideoLogDocumentRepository videoLogDocumentRepository;
     private final VideoSummaryDocumentRepository videoSummaryDocumentRepository;
 
@@ -41,9 +43,9 @@ public class VideoService {
         return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
-    public VideoListResponseDto searchVideo(String keyword, PageRequest pageRequest) {
-        Page<VideoResponseDto> videoList = videoRepository.findAll(pageRequest).map(VideoResponseDto::toDto);
-        return new VideoListResponseDto(videoList.getContent(), videoList.getTotalPages());
+    public VideoDocumentListResponseDto searchVideo(String keyword, PageRequest pageRequest) {
+        Page<VideoDocumentDto> videoList = videoLogRepository.searchVideoLog(keyword, pageRequest).map(VideoDocumentDto::toDto);
+        return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
 }
