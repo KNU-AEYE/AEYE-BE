@@ -41,4 +41,9 @@ public class VideoService {
         return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
+    public VideoListResponseDto searchVideo(String keyword, PageRequest pageRequest) {
+        Page<VideoResponseDto> videoList = videoRepository.findAll(pageRequest).map(VideoResponseDto::toDto);
+        return new VideoListResponseDto(videoList.getContent(), videoList.getTotalPages());
+    }
+
 }
