@@ -36,12 +36,12 @@ public class VideoService {
         return VideoResponseDto.toDto(videoRepository.getVideoById(videoId));
     }
 
-    public VideoDocumentListResponseDto searchVideo(String username, String keyword, PageRequest pageRequest) {
-        Member member = memberRepository.getMemberByOauth2Id(username);
-        Page<VideoDocumentDto> videoList = videoLogDocumentRepository.findByContent(pageRequest, keyword).map(
-            VideoDocumentDto::toDto);
-        return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
-    }
+//    public VideoDocumentListResponseDto searchVideo(String username, String keyword, PageRequest pageRequest) {
+//        Member member = memberRepository.getMemberByOauth2Id(username);
+//        Page<VideoDocumentDto> videoList = videoLogDocumentRepository.findByContent(pageRequest, keyword).map(
+//            VideoDocumentDto::toDto);
+//        return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
+//    }
 
     public VideoDocumentListResponseDto searchVideo(String keyword, PageRequest pageRequest) {
         Page<VideoDocumentDto> videoList = videoLogRepository.searchVideoLog(keyword, pageRequest).map(VideoDocumentDto::toDto);
