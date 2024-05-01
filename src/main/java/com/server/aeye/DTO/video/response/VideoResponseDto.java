@@ -27,4 +27,10 @@ public class VideoResponseDto {
             .build();
     }
 
+    public static VideoResponseDto toDto(Long videoId) {
+        return VideoResponseDto.builder()
+            .id(videoId)
+            .build();
+    }
+
 }

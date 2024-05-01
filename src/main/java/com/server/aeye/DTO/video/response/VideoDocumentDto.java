@@ -2,6 +2,7 @@ package com.server.aeye.DTO.video.response;
 
 import com.server.aeye.domain.VideoLog;
 import com.server.aeye.domain.VideoLogDocument;
+import com.server.aeye.domain.VideoSummary;
 import com.server.aeye.domain.VideoSummaryDocument;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,14 +16,14 @@ public class VideoDocumentDto {
     private String time;
     private VideoResponseDto videoResponseDto;
 
-//    public static VideoDocumentDto toDto(VideoLogDocument videoDocument) {
-//        return VideoDocumentDto.builder()
-//            .id(videoDocument.getId())
-//            .content(videoDocument.getContent())
-//            .time(videoDocument.getTime())
-//            .videoId(videoDocument.getVideo_id())
-//            .build();
-//    }
+    public static VideoDocumentDto toDto(VideoLogDocument videoDocument) {
+        return VideoDocumentDto.builder()
+            .id(videoDocument.getId())
+            .content(videoDocument.getContent())
+            .time(videoDocument.getTime())
+            .videoResponseDto(VideoResponseDto.toDto(videoDocument.getVideo_id()))
+            .build();
+    }
 
 //    public static VideoDocumentDto toDto(VideoSummaryDocument videoDocument) {
 //        return VideoDocumentDto.builder()
@@ -39,6 +40,15 @@ public class VideoDocumentDto {
             .content(videoLog.getContent())
             .time(String.valueOf(videoLog.getTime()))
             .videoResponseDto(VideoResponseDto.toDto(videoLog.getVideo()))
+            .build();
+    }
+
+    public static VideoDocumentDto toDto(VideoSummary videoSummary) {
+        return VideoDocumentDto.builder()
+            .id(videoSummary.getId())
+            .content(videoSummary.getContent())
+            .time(String.valueOf(videoSummary.getTime()))
+            .videoResponseDto(VideoResponseDto.toDto(videoSummary.getVideo()))
             .build();
     }
 }
