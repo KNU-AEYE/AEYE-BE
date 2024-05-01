@@ -228,7 +228,59 @@ public class InitDb {
             + "Normal activities took extraordinary amounts of concentration at the high altitude.\n"
             + "The river stole the gods.\n"
             + "Nobody questions who built the pyramids in Mexico.\n"
-            + "Courage and stupidity were all he had.";
+            + "Courage and stupidity were all he had.\n"
+            + "The quick brown fox jumps over the lazy dog near the riverside.\n"
+            +"The lyrics of the song sounded like fingernails on a chalkboard.\n"
+            +"He dreamed of eating green apples with worms.\n"
+            +"There are no heroes in a punk rock band.\n"
+            +"Nancy was proud that she ran a tight shipwreck.\n"
+            +"As time wore on, simple dog commands turned into full paragraphs explaining why the dog couldn’t do something.\n"
+            +"25 years later, she still regretted that specific moment.\n"
+            +"The technology conference unveiled revolutionary gadgets that promised a brighter future.\n"
+            + "Her diary was a window into her dreams, fears, and deepest thoughts.\n"
+            + "On the crowded street, the aroma of freshly baked bread was irresistible.\n"
+            + "The detective pieced together clues that seemed unrelated at first glance.\n"
+            + "The marathon runner pushed through the pain, eyeing the finish line with determination.\n"
+            + "The night sky was adorned with a tapestry of stars, each telling its own ancient tale.\n"
+            + "As the debate heated up, each participant sharpened their arguments with precise facts.\n"
+            + "The artist’s brush danced across the canvas, creating a masterpiece that would leave a lasting impression.\n"
+            + "The sun dipped below the horizon, casting a warm glow over the landscape.\n"
+            + "The child’s laughter was infectious, spreading joy to everyone around.\n"
+            + "The mountain range stretched out before us, a majestic sight that took our breath away.\n"
+            + "The aroma of fresh coffee filled the air, awakening our senses with its rich, bold flavor.\n"
+            + "The mountain’s peak was covered in a blanket of snow that glistened under the morning sun.\n"
+            + "The artist dipped her brush into the paint, ready to bring her vision to canvas.\n"
+            + "The sun set over the horizon, painting the sky in a riot of colors that took our breath away.\n"
+            + "The child’s eyes sparkled with wonder as she gazed up at the night sky, filled with stars.\n"
+            + "The aroma of freshly baked bread wafted through the air, tempting us with its warm, buttery scent.\n"
+            + "The mountain path wound its way through the forest, leading us to a hidden waterfall.\n"
+            + "The artist’s hands moved with precision, creating a masterpiece that captured the essence of the subject.\n"
+            + "The sun cast long shadows across the landscape, signaling the end of another day.\n"
+            + "The child’s laughter echoed through the park, filling the air with joy and happiness.\n"
+            + "The mountain range loomed in the distance, a majestic sight that filled us with awe.\n"
+            + "The aroma of fresh coffee filled the room, awakening our senses with its rich, bold flavor.\n"
+            + "The mountain’s peak was shrouded in mist, a mysterious sight that beckoned us to explore.\n"
+            + "The artist’s brush danced across the canvas, bringing her vision to life with each stroke.\n"
+            + "The sun dipped below the horizon, casting a warm glow over the landscape as night fell.\n"
+            + "The child’s eyes sparkled with excitement as she opened her birthday present.\n"
+            + "The aroma of freshly baked bread filled the kitchen, tempting us with its warm, yeasty scent.\n"
+            + "The mountain path wound its way through the forest, leading us to a hidden clearing.\n"
+            + "The artist’s hands moved with purpose, creating a masterpiece that captured the beauty of the scene.\n"
+            + "The sun cast long shadows across the landscape, signaling the approach of evening.\n"
+            + "The child’s laughter rang out through the house, filling it with joy and happiness.\n"
+            + "The mountain range stretched out before us, a rugged landscape that took our breath away.\n"
+            + "The aroma of fresh coffee wafted through the air, awakening our senses with its rich, earthy scent.\n"
+            + "The mountain’s peak was bathed in sunlight, a majestic sight that inspired awe.\n"
+            + "The artist’s brush moved with fluidity, creating a masterpiece that captured the essence of the subject.\n"
+            + "The sun dipped below the horizon, casting a warm glow over the landscape as night descended.\n"
+            + "Her research into renewable energy sources earned accolades at the international conference.\n"
+            + "The detective’s keen eye for detail helped him solve the case in record time.\n"
+            + "He savored the last slice of pizza, already planning his next visit to the restaurant.\n"
+            + "The storm clouds gathered on the horizon, signaling the approach of a summer squall.\n"
+            + "The professor’s lecture on quantum physics left the students scratching their heads in confusion.\n"
+            + "The aroma of fresh-baked cookies filled the kitchen, tempting us with its sweet, buttery scent.\n"
+            + "The mountain path wound its way through the forest, leading us to a hidden glade.\n"
+            + "The artist’s brush moved with precision, creating a masterpiece that captured the essence of the subject.\n";
 
         List<String> strings = List.of(string.split("\n"));
 
@@ -249,6 +301,15 @@ public class InitDb {
                 .build();
             em.persist(video);
 
+            for (int i = 0; i < 100; i++) {
+                strings.forEach(s -> {
+                    em.persist(VideoSummary.builder()
+                        .content(s)
+                        .time(LocalTime.parse("00:00:00"))
+                        .video(video)
+                        .build());
+                });
+            }
             strings.forEach(s -> {
                 em.persist(VideoSummary.builder()
                     .content(s)

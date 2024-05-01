@@ -29,8 +29,13 @@ public class VideoSummary {
     @Column(length = 5000)
     private String content;
 
+    private boolean isChecked = false;
+
     @ManyToOne
     @JoinColumn(name = "video_id")
     private Video video;
 
+    public void check() {
+        this.isChecked = true;
+    }
 }
