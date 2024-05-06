@@ -34,4 +34,6 @@ public class Video extends AuditingTimeEntity {
     @JoinColumn(name = "team_id")
     private Team team;
 
+    private String city;
+    private String district;
 }
