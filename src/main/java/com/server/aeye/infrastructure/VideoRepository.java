@@ -4,6 +4,7 @@ import com.server.aeye.domain.Team;
 import com.server.aeye.domain.Video;
 import com.server.aeye.exception.ErrorStatus;
 import com.server.aeye.exception.model.NotFoundException;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VideoRepository extends JpaRepository<Video, Long> {
+
+    List<Video> findByThumbnailUriIsNull();
 
     Page<Video> findAllByTeam(PageRequest pageRequest, Team team);
 

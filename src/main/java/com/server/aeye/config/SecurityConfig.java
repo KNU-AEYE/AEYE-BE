@@ -1,5 +1,8 @@
 package com.server.aeye.config;
 
+import com.google.auth.oauth2.GoogleCredentials;
+import com.google.cloud.storage.Storage;
+import com.google.cloud.storage.StorageOptions;
 import com.server.aeye.jwt.CustomAccessDeniedHandler;
 import com.server.aeye.jwt.CustomEntryPoint;
 import com.server.aeye.jwt.JwtFilter;
@@ -7,6 +10,8 @@ import com.server.aeye.jwt.TokenProvider;
 import com.server.aeye.oauth.OAuth2LoginFailureHandler;
 import com.server.aeye.oauth.OAuth2LoginSuccessHandler;
 import com.server.aeye.oauth.OAuth2UserService;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +23,7 @@ import org.springframework.security.config.annotation.web.configurers.HeadersCon
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -33,6 +39,17 @@ public class SecurityConfig {
     private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
     private final CustomEntryPoint entryPoint;
     private final CustomAccessDeniedHandler accessDeniedHandler;
+
+    private String keyFileLocation;
+
+    @Bean
+    public Storage storage() throws IOException {
+        InputStream keyFile = ResourceUtils.getURL(keyFileLocation).openStream();
+        return StorageOptions.newBuilder()
+            .setCredentials(GoogleCredentials.fromStream(keyFile))
+            .build()
+            .getService();
+    }
 
     private static final String[] WHITE_LIST = {
         "/api/auth/**",
