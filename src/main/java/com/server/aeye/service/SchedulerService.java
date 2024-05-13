@@ -4,6 +4,7 @@ import com.server.aeye.domain.VideoSummaryDocument;
 import com.server.aeye.infrastructure.VideoLogRepository;
 import com.server.aeye.infrastructure.VideoRepository;
 import com.server.aeye.infrastructure.VideoSummaryRepository;
+import com.server.aeye.util.ThumbnailUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -20,8 +21,9 @@ public class SchedulerService {
     private final VideoSummaryRepository videoSummaryRepository;
     private final VideoLogRepository videoLogRepository;
     private final ElasticsearchOperations elasticsearchOperations;
+    private final ThumbnailUtil thumbnailUtil;
 
-    // 1분에 한 번 씩
+    // 5분에 한 번 씩
     @Scheduled(cron = "5 * * * * *")
     public void synchronizeElastic() {
         log.info("elasticsearch synchronize start");
@@ -34,11 +36,9 @@ public class SchedulerService {
     }
 
     // 1시간에 한 번 씩
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(cron = "5 * * * * *")
     public void generateThumbnail() {
         log.info("generate thumbnail start");
-        videoRepository.findByThumbnailUriIsNull().forEach(video -> {
-            videoService.generateThumbnail(video);
-        });
+        videoLogRepository.findByThumbnailUriIsNull().forEach(thumbnailUtil::generateThumbnail);
     }
 }
