@@ -41,6 +41,7 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
 	// google cloud storage
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-starter', version: '1.2.5.RELEASE'
 	implementation group: 'org.springframework.cloud', name: 'spring-cloud-gcp-storage', version: '1.2.5.RELEASE'
@@ -72,6 +73,10 @@ dependencies {
 
 	// jcodec
 	implementation 'org.jcodec:jcodec-javase:0.2.5'
+
+	// ffmpeg
+	implementation 'net.bramp.ffmpeg:ffmpeg:0.7.0'
+
 }
 
 dependencyManagement {
