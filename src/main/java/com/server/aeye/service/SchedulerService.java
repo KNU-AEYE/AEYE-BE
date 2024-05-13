@@ -36,9 +36,9 @@ public class SchedulerService {
     }
 
     // 1시간에 한 번 씩
-    @Scheduled(cron = "5 * * * * *")
-    public void generateThumbnail() {
-        log.info("generate thumbnail start");
-        videoLogRepository.findByThumbnailUriIsNull().forEach(thumbnailUtil::generateThumbnail);
-    }
+//    @Scheduled(cron = "5 * * * * *")
+//    public void generateThumbnail() {
+//        log.info("generate thumbnail start");
+//        videoLogRepository.findByThumbnailUriIsNull().forEach(thumbnailUtil::generateThumbnail);
+//    }
 }
