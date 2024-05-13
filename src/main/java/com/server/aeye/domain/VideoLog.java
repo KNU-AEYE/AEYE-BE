@@ -29,4 +29,9 @@ public class VideoLog {
     @JoinColumn(name = "video_id")
     private Video video;
 
+    private String thumbnailUri;
+
+    public void updateThumbnailUri(String thumbnailUri) {
+        this.thumbnailUri = thumbnailUri;
+    }
 }

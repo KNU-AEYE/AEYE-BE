@@ -5,6 +5,7 @@ import com.server.aeye.DTO.video.response.VideoDocumentListResponseDto;
 import com.server.aeye.DTO.video.response.VideoListResponseDto;
 import com.server.aeye.DTO.video.response.VideoResponseDto;
 import com.server.aeye.domain.Member;
+import com.server.aeye.domain.Video;
 import com.server.aeye.domain.VideoLogDocument;
 import com.server.aeye.infrastructure.MemberRepository;
 import com.server.aeye.infrastructure.VideoLogRepository;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,16 +28,19 @@ public class VideoService {
     private final VideoLogDocumentRepository videoLogDocumentRepository;
     private final VideoSummaryDocumentRepository videoSummaryDocumentRepository;
 
+    @Transactional(readOnly = true)
     public VideoListResponseDto getVideoList(String username, PageRequest pageRequest) {
         Member member = memberRepository.getMemberByOauth2Id(username);
         Page<VideoResponseDto> videoList = videoRepository.findAllByTeam(pageRequest, member.getTeam()).map(VideoResponseDto::toDto);
         return new VideoListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
+    @Transactional(readOnly = true)
     public VideoResponseDto getVideo(String username, Long videoId) {
         return VideoResponseDto.toDto(videoRepository.getVideoById(videoId));
     }
 
+    @Transactional(readOnly = true)
     public VideoDocumentListResponseDto searchVideo(String username, String keyword, PageRequest pageRequest) {
         Member member = memberRepository.getMemberByOauth2Id(username);
         Page<VideoDocumentDto> videoList = videoLogDocumentRepository.findByContent(pageRequest, keyword).map(
@@ -43,14 +48,20 @@ public class VideoService {
         return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
+    @Transactional(readOnly = true)
     public VideoDocumentListResponseDto searchVideoLog(String keyword, PageRequest pageRequest) {
         Page<VideoDocumentDto> videoList = videoLogRepository.searchVideoLog(keyword, pageRequest).map(VideoDocumentDto::toDto);
         return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
+    @Transactional(readOnly = true)
     public VideoDocumentListResponseDto searchVideoSummary(String keyword, PageRequest pageRequest) {
         Page<VideoDocumentDto> videoList = videoLogRepository.searchVideoSummary(keyword, pageRequest).map(VideoDocumentDto::toDto);
         return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
+    @Transactional
+    public void generateThumbnail(Video video) {
+
+    }
 }
