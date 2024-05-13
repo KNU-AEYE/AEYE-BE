@@ -5,6 +5,7 @@ import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import java.io.IOException;
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class DataBucketUtil {
 
     @Value("${spring.cloud.gcp.storage.bucket}")
@@ -20,21 +22,15 @@ public class DataBucketUtil {
 
     private final Storage storage;
 
-    @Autowired
-    public DataBucketUtil(Storage storage) {
-        this.storage = storage;
-    }
-
-    public String uploadThumbnailImage(MultipartFile file) throws IOException {
+    public String uploadThumbnailImage(byte[] fileData, String contentType) throws IOException {
         String uuid = UUID.randomUUID().toString();
-        String ext = file.getContentType();
-        log.info("uuid: {}, ext: {}", uuid, ext);
-        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, uuid)
-            .setContentType(ext)
+        log.info("uuid: {}", uuid);
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, "thumbnail/" + uuid + ".png")
+            .setContentType(contentType)
             .build();
         log.info("blobInfo: {}", blobInfo);
-        Blob blob = storage.create(blobInfo, file.getBytes());
+        Blob blob = storage.create(blobInfo, fileData);
         log.info("blob: {}", blob);
-        return bucketName + "/thumbnail/" + uuid;
+        return bucketName + "/thumbnail/" + uuid + ".png";
     }
 }
