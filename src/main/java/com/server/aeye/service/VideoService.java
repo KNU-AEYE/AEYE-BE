@@ -1,13 +1,16 @@
 package com.server.aeye.service;
 
+import com.server.aeye.DTO.video.request.VideoRequestDto;
 import com.server.aeye.DTO.video.response.VideoDocumentDto;
 import com.server.aeye.DTO.video.response.VideoDocumentListResponseDto;
 import com.server.aeye.DTO.video.response.VideoListResponseDto;
 import com.server.aeye.DTO.video.response.VideoResponseDto;
 import com.server.aeye.domain.Member;
+import com.server.aeye.domain.Team;
 import com.server.aeye.domain.Video;
 import com.server.aeye.domain.VideoLogDocument;
 import com.server.aeye.infrastructure.MemberRepository;
+import com.server.aeye.infrastructure.TeamRepository;
 import com.server.aeye.infrastructure.VideoLogRepository;
 import com.server.aeye.infrastructure.VideoRepository;
 import com.server.aeye.infrastructure.elasticsearch.VideoLogDocumentRepository;
@@ -27,6 +30,7 @@ public class VideoService {
     private final VideoLogRepository videoLogRepository;
     private final VideoLogDocumentRepository videoLogDocumentRepository;
     private final VideoSummaryDocumentRepository videoSummaryDocumentRepository;
+    private final TeamRepository teamRepository;
 
     @Transactional(readOnly = true)
     public VideoListResponseDto getVideoList(String username, PageRequest pageRequest) {
@@ -61,7 +65,17 @@ public class VideoService {
     }
 
     @Transactional
-    public void generateThumbnail(Video video) {
-
+    public void uploadVideo(VideoRequestDto videoRequestDto) {
+        Team team = teamRepository.findById(1L).orElseThrow();
+        Video video = Video.builder()
+            .title(videoRequestDto.getTitle())
+            .description(videoRequestDto.getDescription())
+            .videoUri(videoRequestDto.getVideoUri())
+            .thumbnailUri(videoRequestDto.getThumbnailUri())
+            .team(team)
+            .city(videoRequestDto.getCity())
+            .district(videoRequestDto.getDistrict())
+            .build();
+        videoRepository.save(video);
     }
 }
