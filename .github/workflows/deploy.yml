@@ -22,7 +22,7 @@ env:
   PORT:     ${{ secrets.PORT }}
   INSTANCE_PATH: ./AEYE-INFRA/backend
   IMAGE_NAME: shinsion/aeye-server
-#  GOOGLE_APPLICATION_CREDENTIALS: src/main/resources/${{ secrets.GOOGLE_CREDENTIALS_NAME }}
+  GOOGLE_APPLICATION_CREDENTIALS: src/main/resources/${{ secrets.GOOGLE_CREDENTIALS_NAME }}
 
 
 jobs:
@@ -47,10 +47,10 @@ jobs:
           cd ./src/main/resources
           echo "${{ secrets.APPLICATION }}" > application.yml
 
-#      - name: Create Google Credentials JSON
-#        run: |
-#          cd ./src/main/resources
-#          echo "${{ secrets.GOOGLE_CREDENTIALS }}" > "${{ secrets.GOOGLE_CREDENTIALS_NAME }}"
+      - name: Create Google Credentials JSON
+        run: |
+         cd ./src/main/resources
+         echo "${{ secrets.GOOGLE_CREDENTIALS }}" > "${{ secrets.GOOGLE_CREDENTIALS_NAME }}"
 
       - name: Build with Gradle
         run: ./gradlew clean build
