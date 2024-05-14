@@ -1,6 +1,7 @@
 package com.server.aeye.controller;
 
 import com.server.aeye.DTO.ApiResponseDto;
+import com.server.aeye.DTO.video.request.VideoRequestDto;
 import com.server.aeye.DTO.video.response.VideoDocumentListResponseDto;
 import com.server.aeye.DTO.video.response.VideoListResponseDto;
 import com.server.aeye.DTO.video.response.VideoResponseDto;
@@ -16,6 +17,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -64,6 +67,13 @@ public class VideoController {
         @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ApiResponseDto.success(SuccessStatus.GET_VIDEO_SUCCESS,
             videoService.searchVideoLog(keyword, PageRequest.of(page, size)));
+    }
+
+    @Operation(summary = "영상 업로드 후 정보 추가", description = "영상이 GCS에 업로드 된 후 생성된 정보를 추가합니다.")
+    @PostMapping
+    public ApiResponseDto<?> uploadVideo(@RequestBody VideoRequestDto videoRequestDto) {
+        videoService.uploadVideo(videoRequestDto);
+        return ApiResponseDto.success(SuccessStatus.CREATE_VIDEO_SUCCESS);
     }
 
 }
