@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +27,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/video")
 @RequiredArgsConstructor
-@SecurityRequirement(name = "Access Token")
 @Tag(name = "Video", description = "영상 관리 API")
 public class VideoController {
 
     private final VideoService videoService;
 
     @Operation(summary = "영상 목록 조회", description = "영상 목록을 조회합니다.")
+    @SecurityRequirement(name = "Access Token")
     @GetMapping
     public ApiResponseDto<VideoListResponseDto> getVideoList(
         @Parameter(hidden = true) @AuthenticationPrincipal User user,
@@ -42,6 +43,7 @@ public class VideoController {
     }
 
     @Operation(summary = "영상 정보 조회", description = "영상 정보를 조회합니다.")
+    @SecurityRequirement(name = "Access Token")
     @GetMapping("/detail/{videoId}")
     public ApiResponseDto<VideoResponseDto> getVideo(
         @Parameter(hidden = true) @AuthenticationPrincipal User user, @PathVariable Long videoId) {
@@ -51,9 +53,10 @@ public class VideoController {
 
 //     elasticsearch
     @Operation(summary = "엘라스틱 서치 영상 검색", description = "영상을 키워드 또는 내용으로 검색합니다. Page, Size 명시해주세요.")
+    @SecurityRequirement(name = "Access Token")
     @GetMapping("/search/elastic")
     public ApiResponseDto<VideoDocumentListResponseDto> elasticsearchVideo(
-        @Parameter(hidden = true) @AuthenticationPrincipal User user, @RequestParam String keyword,
+        @Parameter(hidden = true) @AuthenticationPrincipal User user    , @RequestParam String keyword,
         @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ApiResponseDto.success(SuccessStatus.GET_VIDEO_SUCCESS,
             videoService.searchVideo(user.getUsername(), keyword, PageRequest.of(page, size)));
@@ -61,6 +64,7 @@ public class VideoController {
 
     // QueryDsl
     @Operation(summary = "영상 검색", description = "영상을 키워드 또는 내용으로 검색합니다. Page, Size 명시해주세요.")
+    @SecurityRequirement(name = "Access Token")
     @GetMapping("/search")
     public ApiResponseDto<VideoDocumentListResponseDto> searchVideo(
         @Parameter(hidden = true) @AuthenticationPrincipal User user, @RequestParam String keyword,
@@ -70,7 +74,7 @@ public class VideoController {
     }
 
     @Operation(summary = "영상 업로드 후 정보 추가", description = "영상이 GCS에 업로드 된 후 생성된 정보를 추가합니다.")
-    @PostMapping
+    @PostMapping("/cloud")
     public ApiResponseDto<?> uploadVideo(@RequestBody VideoRequestDto videoRequestDto) {
         videoService.uploadVideo(videoRequestDto);
         return ApiResponseDto.success(SuccessStatus.CREATE_VIDEO_SUCCESS);

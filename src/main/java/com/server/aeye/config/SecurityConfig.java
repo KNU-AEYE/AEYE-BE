@@ -57,7 +57,8 @@ public class SecurityConfig {
         "/api/auth/**",
         "/swagger-ui/**",
         "/api-docs/**",
-        "/login"
+        "/login",
+        "/video/cloud"
     };
 
     private static final String[] AUTHENTICATION_LIST = {
