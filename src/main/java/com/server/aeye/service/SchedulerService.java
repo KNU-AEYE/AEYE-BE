@@ -24,7 +24,7 @@ public class SchedulerService {
     private final ThumbnailUtil thumbnailUtil;
 
     // 5분에 한 번 씩
-    @Scheduled(cron = "5 * * * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     public void synchronizeElastic() {
         log.info("elasticsearch synchronize start");
         videoSummaryRepository.findAllByIsCheckedFalse().forEach(videoSummary -> {
