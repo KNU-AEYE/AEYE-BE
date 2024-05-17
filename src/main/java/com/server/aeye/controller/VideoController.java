@@ -2,6 +2,7 @@ package com.server.aeye.controller;
 
 import com.server.aeye.DTO.ApiResponseDto;
 import com.server.aeye.DTO.video.request.VideoRequestDto;
+import com.server.aeye.DTO.video.request.VideoSearchRequestDto;
 import com.server.aeye.DTO.video.response.VideoDocumentListResponseDto;
 import com.server.aeye.DTO.video.response.VideoListResponseDto;
 import com.server.aeye.DTO.video.response.VideoResponseDto;
@@ -17,6 +18,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,7 +64,7 @@ public class VideoController {
             videoService.searchVideo(user.getUsername(), keyword, PageRequest.of(page, size)));
     }
 
-    // QueryDsl
+    // QueryDsl v1
     @Operation(summary = "영상 검색", description = "영상을 키워드 또는 내용으로 검색합니다. Page, Size 명시해주세요.")
     @SecurityRequirement(name = "Access Token")
     @GetMapping("/search")
@@ -70,7 +72,18 @@ public class VideoController {
         @Parameter(hidden = true) @AuthenticationPrincipal User user, @RequestParam String keyword,
         @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         return ApiResponseDto.success(SuccessStatus.GET_VIDEO_SUCCESS,
-            videoService.searchVideoLog(keyword, PageRequest.of(page, size)));
+            videoService.searchVideoLog1(keyword, PageRequest.of(page, size)));
+    }
+
+    // QueryDsl v2
+    @Operation(summary = "영상 검색", description = "영상을 키워드 또는 내용으로 검색합니다. 필터를 추가한 버전2입니다.")
+    @SecurityRequirement(name = "Access Token")
+    @GetMapping("/search/v2")
+    public ApiResponseDto<VideoDocumentListResponseDto> searchVideo(
+        @Parameter(hidden = true) @AuthenticationPrincipal User user,
+        @ModelAttribute VideoSearchRequestDto videoSearchRequestDto) {
+        return ApiResponseDto.success(SuccessStatus.GET_VIDEO_SUCCESS,
+            videoService.searchVideoLog2(videoSearchRequestDto));
     }
 
     @Operation(summary = "영상 업로드 후 정보 추가", description = "영상이 GCS에 업로드 된 후 생성된 정보를 추가합니다.")

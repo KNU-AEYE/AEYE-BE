@@ -31,6 +31,8 @@ public class VideoLog {
 
     private String thumbnailUri;
 
+    private String tag;
+
     public void updateThumbnailUri(String thumbnailUri) {
         this.thumbnailUri = thumbnailUri;
     }
