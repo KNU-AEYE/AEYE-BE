@@ -1,6 +1,7 @@
 package com.server.aeye.service;
 
 import com.server.aeye.DTO.video.request.VideoRequestDto;
+import com.server.aeye.DTO.video.request.VideoSearchRequestDto;
 import com.server.aeye.DTO.video.response.VideoDocumentDto;
 import com.server.aeye.DTO.video.response.VideoDocumentListResponseDto;
 import com.server.aeye.DTO.video.response.VideoListResponseDto;
@@ -52,9 +53,18 @@ public class VideoService {
         return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
+    // v1
     @Transactional(readOnly = true)
-    public VideoDocumentListResponseDto searchVideoLog(String keyword, PageRequest pageRequest) {
-        Page<VideoDocumentDto> videoList = videoLogRepository.searchVideoLog(keyword, pageRequest).map(VideoDocumentDto::toDto);
+    public VideoDocumentListResponseDto searchVideoLog1(String keyword, PageRequest pageRequest) {
+        Page<VideoDocumentDto> videoList = videoLogRepository.searchVideoLog1(keyword, pageRequest).map(VideoDocumentDto::toDto);
+        return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
+    }
+
+    // v2
+    @Transactional(readOnly = true)
+    public VideoDocumentListResponseDto searchVideoLog2(VideoSearchRequestDto videoSearchRequestDto) {
+        PageRequest pageRequest = PageRequest.of(videoSearchRequestDto.getPage(), videoSearchRequestDto.getSize());
+        Page<VideoDocumentDto> videoList = videoLogRepository.searchVideoLog2(videoSearchRequestDto, pageRequest).map(VideoDocumentDto::toDto);
         return new VideoDocumentListResponseDto(videoList.getContent(), videoList.getTotalPages());
     }
 
