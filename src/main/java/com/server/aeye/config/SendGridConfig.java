@@ -10,15 +10,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SendGridConfig {
 
-    @Value("${sendgrid.api.key}")
+    @Value("${spring.sendgrid.api-key}")
     private String apiKey;
-
-    @Value("${sendgrid.integration.enabled}")
-    private boolean isSendGridIntegrationEnabled = false;
 
     @Bean
     public SendGrid sendGrid() {
-        if (!isSendGridIntegrationEnabled && apiKey == null) {
+        if (apiKey == null) {
             throw new CustomException(ErrorStatus.BAD_REQUEST, "SendGrid integration is not enabled");
         }
         return new SendGrid(apiKey);
