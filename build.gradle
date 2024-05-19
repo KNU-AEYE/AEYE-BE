@@ -78,7 +78,7 @@ dependencies {
 	implementation 'net.bramp.ffmpeg:ffmpeg:0.7.0'
 
 	// sendgrid
-	implementation 'com.sendgrid:sendgrid-java:4.9.3'
+	implementation 'com.sendgrid:sendgrid-java:4.10.2'
 
 }
 
