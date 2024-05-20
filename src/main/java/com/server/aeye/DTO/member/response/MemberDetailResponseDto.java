@@ -18,6 +18,7 @@ public class MemberDetailResponseDto {
     private String phone;
     private SocialLogin socialLogin;
     private boolean isAdmin;
+    private boolean subscribeDailyReport;
 
     public static MemberDetailResponseDto toDto(Member member) {
         return MemberDetailResponseDto.builder()
@@ -29,6 +30,7 @@ public class MemberDetailResponseDto {
             .phone(member.getPhone())
             .socialLogin(member.getSocialLogin())
             .isAdmin(member.getAuthority() == Authority.ROLE_ADMIN)
+            .subscribeDailyReport(member.subscribeDailyReport())
             .build();
     }
 }

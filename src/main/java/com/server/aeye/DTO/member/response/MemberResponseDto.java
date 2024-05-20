@@ -13,6 +13,7 @@ public class MemberResponseDto {
     private String name;
     private String profileUri;
     private SocialLogin socialLogin;
+    private boolean subscribeDailyReport;
 
     public static MemberResponseDto toDto(Member member){
         return MemberResponseDto.builder()
@@ -20,6 +21,7 @@ public class MemberResponseDto {
             .name(member.getName())
             .profileUri(member.getProfileUri())
             .socialLogin(member.getSocialLogin())
+            .subscribeDailyReport(member.subscribeDailyReport())
             .build();
     }
 }
