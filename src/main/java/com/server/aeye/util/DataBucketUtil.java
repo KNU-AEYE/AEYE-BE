@@ -4,13 +4,13 @@ import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.BlobInfo;
 import com.google.cloud.storage.Storage;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @Component
@@ -32,5 +32,17 @@ public class DataBucketUtil {
         Blob blob = storage.create(blobInfo, fileData);
         log.info("blob: {}", blob);
         return bucketName + "/thumbnail/" + uuid + ".png";
+    }
+
+    public String uploadDailyReport(byte[] fileData, String contentType) throws IOException {
+        String date = new SimpleDateFormat("yyyyMMdd").format(new Date());
+        String fileName = "report/" + date + "_report.pdf";
+        log.info("fileName: {}", fileName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(bucketName, fileName)
+            .setContentType(contentType)
+            .build();
+        log.info("blobInfo: {}", blobInfo);
+        Blob blob = storage.create(blobInfo, fileData);
+        return "https://storage.googleapis.com/" + bucketName + "/" + fileName;
     }
 }
