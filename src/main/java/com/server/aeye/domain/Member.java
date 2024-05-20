@@ -42,7 +42,7 @@ public class Member extends AuditingTimeEntity {
 
     private LocalDateTime lastActive;
 
-    private boolean receiveDailyReport = false;
+    private boolean subscribeDailyReport = false;
 
     @ManyToOne
     @JoinColumn(name = "team_id")
@@ -70,7 +70,7 @@ public class Member extends AuditingTimeEntity {
         this.lastActive = lastActive;
     }
 
-    public void updateReceiveDailyReport() {
-        this.receiveDailyReport = !this.receiveDailyReport;
+    public boolean subscribeDailyReport() {
+        return this.subscribeDailyReport = !this.subscribeDailyReport;
     }
 }

@@ -60,6 +60,16 @@ public class MemberController {
         return ApiResponseDto.success(SuccessStatus.NO_CONTENT, SuccessStatus.NO_CONTENT.getMessage());
     }
 
+    @Operation(summary = "일일 관제일지 구독 설정", description = "일일 관제일지 구독 설정을 변경합니다.")
+    @PutMapping("/subscribe")
+    public ApiResponseDto<?> subscribeDailyReport(@Parameter(hidden = true) @AuthenticationPrincipal User user) {
+        // 구독 성공, 구독 취소 성공 구분
+        if (memberService.subscribeDailyReport(user.getUsername())) {
+            return ApiResponseDto.success(SuccessStatus.SUBSCRIBE_DAILY_REPORT_SUCCESS, SuccessStatus.SUBSCRIBE_DAILY_REPORT_SUCCESS.getMessage());
+        }
+        return ApiResponseDto.success(SuccessStatus.UNSUBSCRIBE_DAILY_REPORT_SUCCESS, SuccessStatus.UNSUBSCRIBE_DAILY_REPORT_SUCCESS.getMessage());
+    }
+
     @Operation(summary = "온라인 관리자 조회", description = "현재 접속중인 관리자를 표시합니다.")
     @GetMapping("/online")
     public ApiResponseDto<List<MemberResponseDto>> getOnlineAdmin(@Parameter(hidden = true) @AuthenticationPrincipal User user) {
