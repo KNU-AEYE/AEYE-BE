@@ -4,7 +4,10 @@ import com.sendgrid.*;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import com.sendgrid.helpers.mail.objects.Personalization;
+import com.server.aeye.domain.Member;
 import java.io.IOException;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -27,6 +30,24 @@ public class SendGridUtil {
         Mail mail = new Mail(from, subject, to, content);
         Email email = new Email("yelnets99@naver.com");
         mail.personalization.get(0).addTo(email);
+
+        send(mail);
+    }
+
+    public void sendDynamicTemplateEmail(Member member) throws IOException {
+        Email from = new Email("kmicety1@gmail.com");
+        Email to = new Email(member.getEmail());
+        Mail mail = new Mail();
+        mail.setFrom(from);
+
+        mail.setTemplateId("d-30c5cd0ea47440cda01e4db10920ac09");
+
+        Personalization personalization = new Personalization();
+        personalization.addDynamicTemplateData("name", member.getName());
+        personalization.addDynamicTemplateData("link", "https://storage.googleapis.com/aeye-bucket/report/report_sample.pdf");
+        personalization.addTo(to);
+
+        mail.addPersonalization(personalization);
 
         send(mail);
     }

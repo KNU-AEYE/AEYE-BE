@@ -29,7 +29,7 @@ public class SendGridController {
     @PostMapping
     public ApiResponseDto<?> sendEmail(@Parameter(hidden = true) @AuthenticationPrincipal User user)
         throws IOException {
-        emailService.sendEmail();
+        emailService.sendEmail(user.getUsername());
         return ApiResponseDto.success(SuccessStatus.OK, SuccessStatus.OK.getMessage());
     }
 }
