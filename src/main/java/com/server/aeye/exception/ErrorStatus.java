@@ -31,6 +31,7 @@ public enum ErrorStatus {
      */
     MEMBER_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 회원입니다."),
     VIDEO_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 비디오입니다."),
+    REPORT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 날짜에 보고서가 존재하지 않습니다."),
     ;
     private final HttpStatus httpStatus;
     private final String message;

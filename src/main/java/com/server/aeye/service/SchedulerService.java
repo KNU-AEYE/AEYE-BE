@@ -8,6 +8,7 @@ import com.server.aeye.infrastructure.VideoLogRepository;
 import com.server.aeye.infrastructure.VideoRepository;
 import com.server.aeye.infrastructure.VideoSummaryRepository;
 import com.server.aeye.util.ThumbnailUtil;
+import java.io.IOException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +44,7 @@ public class SchedulerService {
     }
 
     @Scheduled(cron = "0 0 8 * * *")
-    public void generateDailyReportAndSendEmail() {
+    public void generateDailyReportAndSendEmail() throws IOException {
         // 1. 일단 일일 관제일지 생성 먼저
         Report report = reportService.generateDailyReport();
 

@@ -30,7 +30,7 @@ public class MemberDetailResponseDto {
             .phone(member.getPhone())
             .socialLogin(member.getSocialLogin())
             .isAdmin(member.getAuthority() == Authority.ROLE_ADMIN)
-            .subscribeDailyReport(member.subscribeDailyReport())
+            .subscribeDailyReport(member.isSubscribeDailyReport())
             .build();
     }
 }

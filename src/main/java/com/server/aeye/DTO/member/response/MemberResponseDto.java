@@ -21,7 +21,7 @@ public class MemberResponseDto {
             .name(member.getName())
             .profileUri(member.getProfileUri())
             .socialLogin(member.getSocialLogin())
-            .subscribeDailyReport(member.subscribeDailyReport())
+            .subscribeDailyReport(member.isSubscribeDailyReport())
             .build();
     }
 }
