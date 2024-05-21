@@ -4,6 +4,7 @@ import com.server.aeye.domain.Member;
 import com.server.aeye.exception.ErrorStatus;
 import com.server.aeye.exception.model.NotFoundException;
 import com.server.aeye.infrastructure.querydsl.member.MemberRepositoryCustom;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,6 +14,8 @@ public interface MemberRepository extends JpaRepository<Member, Long>, MemberRep
 
     Optional<Member> findByEmail(String email);
     Optional<Member> findByOauth2Id(String oauth2Id);
+
+    List<Member> findBySubscribeDailyReportIsTrue();
 
     default Member getMemberByEmail(String email) {
         return this.findByEmail(email).orElseThrow(

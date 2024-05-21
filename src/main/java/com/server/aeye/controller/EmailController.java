@@ -16,11 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sendgrid")
+@RequestMapping("/email")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "Access Token")
-@Tag(name = "SendGrid", description = "SendGrid API")
-public class SendGridController {
+@Tag(name = "EMAIL", description = "EMAIL API")
+public class EmailController {
 
     private final EmailService emailService;
 

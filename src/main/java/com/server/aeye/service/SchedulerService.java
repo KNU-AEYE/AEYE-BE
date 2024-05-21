@@ -1,10 +1,15 @@
 package com.server.aeye.service;
 
+import com.server.aeye.domain.Member;
+import com.server.aeye.domain.Report;
 import com.server.aeye.domain.VideoSummaryDocument;
+import com.server.aeye.infrastructure.MemberRepository;
 import com.server.aeye.infrastructure.VideoLogRepository;
 import com.server.aeye.infrastructure.VideoRepository;
 import com.server.aeye.infrastructure.VideoSummaryRepository;
 import com.server.aeye.util.ThumbnailUtil;
+import java.io.IOException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
@@ -22,6 +27,9 @@ public class SchedulerService {
     private final VideoLogRepository videoLogRepository;
     private final ElasticsearchOperations elasticsearchOperations;
     private final ThumbnailUtil thumbnailUtil;
+    private final EmailService emailService;
+    private final ReportService reportService;
+    private final MemberRepository memberRepository;
 
     // 5분에 한 번 씩
     @Scheduled(cron = "0 */5 * * * *")
@@ -35,10 +43,21 @@ public class SchedulerService {
         });
     }
 
-    // 1시간에 한 번 씩
-//    @Scheduled(cron = "5 * * * * *")
-//    public void generateThumbnail() {
-//        log.info("generate thumbnail start");
-//        videoLogRepository.findByThumbnailUriIsNull().forEach(thumbnailUtil::generateThumbnail);
-//    }
+    @Scheduled(cron = "0 0 8 * * *")
+    public void generateDailyReportAndSendEmail() throws IOException {
+        // 1. 일단 일일 관제일지 생성 먼저
+        Report report = reportService.generateDailyReport();
+
+        // 2. 그 다음, 이메일 자동 발송 등록한 관제사들에게 발송
+        List<Member> members = memberRepository.findBySubscribeDailyReportIsTrue();
+        members.forEach(member -> {
+            try {
+                log.info("send email to {}", member.getName());
+                log.info("send email to {}", member.getEmail());
+                emailService.sendEmail(member, report);
+            } catch (Exception e) {
+                log.error("email send error", e);
+            }
+        });
+    }
 }

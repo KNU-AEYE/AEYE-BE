@@ -46,6 +46,14 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    @Transactional
+    public boolean subscribeDailyReport(String username) {
+        Member member = memberRepository.getMemberByOauth2Id(username);
+        boolean res = member.subscribeDailyReport();
+        memberRepository.save(member);
+        return res;
+    }
+
     @Transactional(readOnly = true)
     public List<MemberResponseDto> getOnlineAdmin(String username) {
         Member member = memberRepository.getMemberByOauth2Id(username);

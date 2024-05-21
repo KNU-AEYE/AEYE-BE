@@ -80,6 +80,8 @@ dependencies {
 	// sendgrid
 	implementation 'com.sendgrid:sendgrid-java:4.10.2'
 
+	// itext
+	implementation 'com.itextpdf:itext7-core:8.0.4'
 }
 
 dependencyManagement {

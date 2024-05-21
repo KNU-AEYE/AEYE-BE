@@ -29,6 +29,8 @@ public enum SuccessStatus {
      * 204 No Content
      */
     NO_CONTENT(HttpStatus.NO_CONTENT, "업데이트 완료"),
+    SUBSCRIBE_DAILY_REPORT_SUCCESS(HttpStatus.NO_CONTENT, "일일 관제일지 구독 성공"),
+    UNSUBSCRIBE_DAILY_REPORT_SUCCESS(HttpStatus.NO_CONTENT, "일일 관제일지 구독 해지 성공"),
     ;
 
     private final HttpStatus httpStatus;
