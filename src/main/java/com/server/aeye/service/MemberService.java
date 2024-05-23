@@ -29,6 +29,7 @@ public class MemberService {
     @Transactional(readOnly = true)
     public MemberDetailResponseDto getMemberDetail(String username) {
         Member member = memberRepository.getMemberByOauth2Id(username);
+        updateLastActiveTime(member, LocalDateTime.now());
         return MemberDetailResponseDto.toDto(member);
     }
 
