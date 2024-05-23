@@ -11,6 +11,7 @@ import com.server.aeye.util.DataBucketUtil;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -48,8 +49,14 @@ public class ReportService {
     private byte[] createDailyReportPdf() throws IOException {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
+        // 리소스 경로에서 PDF 템플릿 파일 열기
+        InputStream resourceStream = getClass().getClassLoader().getResourceAsStream("report_template.pdf");
+        if (resourceStream == null) {
+            throw new IOException("report_template.pdf not found in resources");
+        }
+
         // PDF 템플릿 파일 열기
-        PdfReader reader = new PdfReader("report_template.pdf");
+        PdfReader reader = new PdfReader(resourceStream);
         log.info("reader: {}", reader);
         PdfWriter writer = new PdfWriter(baos);
         PdfDocument pdfDoc = new PdfDocument(reader, writer);
